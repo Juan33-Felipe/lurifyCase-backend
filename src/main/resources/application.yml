@@ -23,3 +23,15 @@ logging:
     org.springframework.web: INFO
     org.hibernate.SQL: INFO
     org.hibernate.orm.jdbc.bind: TRACE
+
+app:
+  security:
+    jwt:
+      secret: ${JWT_SECRET:iurify-case-ultra-secure-secret-key-2026-hs256-compliant-token-signing-key}
+      expiration-seconds: ${JWT_EXPIRATION_SECONDS:3600}
+  ai:
+    gemini:
+      api-key: ${GEMINI_API_KEY:}
+      model: ${GEMINI_MODEL:gemini-2.0-flash}
+      base-url: ${GEMINI_BASE_URL:https://generativelanguage.googleapis.com/v1beta}
+
