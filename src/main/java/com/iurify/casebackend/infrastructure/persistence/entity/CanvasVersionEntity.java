@@ -27,8 +27,10 @@ public class CanvasVersionEntity {
     @Column(name = "parent_version_id")
     private UUID parentVersionId;
 
-    @Column(nullable = false)
-    private String origin;
+    @Enumerated(EnumType.STRING)
+    @JdbcTypeCode(SqlTypes.NAMED_ENUM)
+    @Column(name = "origin", columnDefinition = "canvas_origin_enum", nullable = false)
+    private CanvasOriginEnum origin = CanvasOriginEnum.USER_CREATED;
 
     @Type(JsonType.class)
     @Column(name = "graph_data", columnDefinition = "jsonb", nullable = false)
@@ -36,6 +38,16 @@ public class CanvasVersionEntity {
 
     @Column(name = "created_at", nullable = false, updatable = false)
     private Instant createdAt;
+
+    @PrePersist
+    protected void onCreate() {
+        if (this.createdAt == null) {
+            this.createdAt = Instant.now();
+        }
+        if (this.origin == null) {
+            this.origin = CanvasOriginEnum.USER_CREATED;
+        }
+    }
 
     public UUID getId() { return id; }
     public void setId(UUID id) { this.id = id; }
@@ -45,8 +57,8 @@ public class CanvasVersionEntity {
     public void setVersionNumber(Long versionNumber) { this.versionNumber = versionNumber; }
     public UUID getParentVersionId() { return parentVersionId; }
     public void setParentVersionId(UUID parentVersionId) { this.parentVersionId = parentVersionId; }
-    public String getOrigin() { return origin; }
-    public void setOrigin(String origin) { this.origin = origin; }
+    public CanvasOriginEnum getOrigin() { return origin; }
+    public void setOrigin(CanvasOriginEnum origin) { this.origin = origin; }
     public Map<String, Object> getGraphData() { return graphData; }
     public void setGraphData(Map<String, Object> graphData) { this.graphData = graphData; }
     public Instant getCreatedAt() { return createdAt; }
