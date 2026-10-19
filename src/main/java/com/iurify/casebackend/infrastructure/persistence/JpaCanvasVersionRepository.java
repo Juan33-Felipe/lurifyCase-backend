@@ -8,4 +8,5 @@ import java.util.UUID;
 
 public interface JpaCanvasVersionRepository extends JpaRepository<CanvasVersionEntity, UUID> {
     Optional<CanvasVersionEntity> findFirstByCaseIdOrderByVersionNumberDesc(UUID caseId);
+    Optional<CanvasVersionEntity> findByCaseIdAndVersionNumber(UUID caseId, Long versionNumber);
 }
